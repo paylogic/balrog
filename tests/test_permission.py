@@ -12,5 +12,5 @@ def test_check(permission, identity):
 
 
 def test_filter(permission, identity, objects):
-    """Test Permission.check is True by default."""
+    """Test Permission.filter bypasses the objects by default."""
     assert permission.filter(identity, objects) == objects
