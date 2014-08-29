@@ -31,3 +31,21 @@ def identity():
 def objects():
     """Objects to filter."""
     return [1, 2, 3]
+
+
+@pytest.fixture
+def role_name():
+    """Role name."""
+    return 'test-role'
+
+
+@pytest.fixture
+def role_permissions(permission):
+    """Role permissions."""
+    return [permission]
+
+
+@pytest.fixture
+def role(role_name, role_permissions):
+    """Role object."""
+    return balrog.Role(name=role_name, permissions=role_permissions)

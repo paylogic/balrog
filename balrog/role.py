@@ -15,8 +15,7 @@ class Role(object):
         self.permissions = {}
 
         for permission in permissions:
-            assert (
-                permission.name not in self.permissions,
+            assert permission.name not in self.permissions, (
                 'The permission `{0}` is already registered within this role.'.format(permission.name)
             )
             self.permissions[permission.name] = permission

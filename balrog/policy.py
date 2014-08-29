@@ -19,8 +19,7 @@ class Policy(object):
         self.roles = {}
 
         for role in roles:
-            assert (
-                role.name not in self.roles,
+            assert role.name not in self.roles, (
                 u'The role `{0}` is already registered.'.format(role.name)
             )
             self.roles[role.name] = role
