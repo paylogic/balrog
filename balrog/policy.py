@@ -48,7 +48,7 @@ class Policy(object):
                 name in self.roles,
                 u'Role `{0}` is not registered in this policy.'.format(name)
             )
-            return self.roles[name]
+            return self.roles.get(name, None)
         return None
 
     def check(self, permission, *args, **kwargs):
