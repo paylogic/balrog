@@ -42,7 +42,8 @@ def test_check(role, identity, permission_name):
 def test_check_permission_not_found(role, identity, permission_name, name):
     """Test Role.check is False when permission is not found."""
     assert name != permission_name
-    assert not role.check(identity, name)
+    with pytest.raises(balrog.PermissionNotFound):
+        role.check(identity, name)
 
 
 def test_filter(role, identity, permission_name, objects):
@@ -50,16 +51,11 @@ def test_filter(role, identity, permission_name, objects):
     with mock.patch.object(balrog.Permission, 'filter') as mock_filter:
         mock_filter.return_value = objects
         # None is passed here for default explicitly in order the call args to match
-        assert role.filter(identity, permission_name, objects, None, 1, 2, 3, a=1, b=2, c=3) == objects
+        assert role.filter(identity, permission_name, objects, 1, 2, 3, a=1, b=2, c=3) == objects
         mock_filter.assert_called_once_with(identity, objects, 1, 2, 3, a=1, b=2, c=3)
 
 
 def test_filter_without_permission(role, identity, permission_name, objects):
-    """Test Role.filter returns empty list when not allowed."""
-    assert role.filter(identity, 'unknown', objects) == []
-
-
-def test_filter_without_permission_default(role, identity, permission_name, objects):
-    """Test Role.filter returns the result of default when not allowed."""
-    default = lambda objects: ['d', 'e', 'f', 'a', 'u', 'l', 't']
-    assert role.filter(identity, 'unknown', objects, default=default) == ['d', 'e', 'f', 'a', 'u', 'l', 't']
+    """Test Role.filter raises an exception when not allowed."""
+    with pytest.raises(balrog.PermissionNotFound):
+        role.filter(identity, 'unknown', objects)
