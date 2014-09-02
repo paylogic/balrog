@@ -47,7 +47,6 @@ def test_check_permission_not_found(role, identity, permission_name, name):
 
 def test_filter(role, identity, permission_name, objects):
     """Test Role.filter bypasses the objects by default."""
-
     with mock.patch.object(balrog.Permission, 'filter') as mock_filter:
         mock_filter.return_value = objects
         # None is passed here for default explicitly in order the call args to match

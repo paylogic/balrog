@@ -10,6 +10,14 @@ Balrog is good for systems with the staticly defined roles that enable certain w
 Every identity can have only one role, but on the certain context it requests permission for.
 This approach allows covering your system with functional tests according to the roles and flows.
 
+
+Installation
+------------
+
+.. sourcecode::
+
+    pip install balrog
+
 Usage
 ------
 
@@ -165,8 +173,6 @@ filter
 ~~~~~~
 
 Filter function that is removing elements that current identity has no access to from the collection of objects.
-By default it bypasses objects unless identity has no permission at all and it returns the default falsy collection
-(an empty list).
 
 
 .. code-block:: python
@@ -207,3 +213,21 @@ You can pass certain instance of an object you control your access using whiteli
 
 
 Policy.check method can compare if ip address is in a whitelist.
+
+
+Contact
+-------
+
+If you have questions, bug reports, suggestions, etc. please create an issue on
+the `GitHub project page <http://github.com/paylogic/balrog>`_.
+
+
+License
+-------
+
+This software is licensed under the `MIT license <http://en.wikipedia.org/wiki/MIT_License>`_
+
+See `License <https://github.com/paylogic/balrog/blob/master/LICENSE>`_
+
+
+© 2013 Paylogic International.

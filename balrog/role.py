@@ -1,5 +1,7 @@
 """Access control role."""
 
+from balrog import exceptions
+
 
 class Role(object):
 
@@ -35,23 +37,20 @@ class Role(object):
         else:
             return permission.check(identity, *args, **kwargs)
 
-    def filter(self, identity, permission, objects, default=None, *args, **kwargs):
+    def filter(self, identity, permission, objects, *args, **kwargs):
         """Filter objects according to the permission this identity has.
 
         :param identity: Currently authenticated identity.
         :param permission: Permission name.
         :param objects: Objects to filter out.
-        :param default: Callable that makes falsy result from objects in the case
-                        when denied by role. Defaults to empty list.
 
         :returns: Filtered objects.
+        :raises: `PermissionNotFound` when no permission is found that can
+            filter the objects.
         """
         try:
             permission = self.permissions[permission]
         except KeyError:
-            if callable(default):
-                return default(objects)
-            else:
-                return []
+            raise exceptions.PermissionNotFound()
         else:
             return permission.filter(identity, objects, *args, **kwargs)

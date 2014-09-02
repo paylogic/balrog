@@ -8,18 +8,7 @@ import sys
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
 
-
-# Absolute pathname of directory containing this `setup.py' script.
-SOURCE_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
-
-# Absolute pathname of file containing generated version number.
-VERSION_FILE = os.path.join(SOURCE_DIRECTORY, 'VERSION')
-
-
-def read_version_number():
-    """Get the version number from a text file."""
-    with open(VERSION_FILE) as handle:
-        return handle.read().strip()
+import balrog
 
 
 class ToxTestCommand(TestCommand):
@@ -58,7 +47,7 @@ setup(
     license="MIT license",
     author_email="developers@paylogic.com",
     url="https://github.com/paylogic/balrog",
-    version=read_version_number(),
+    version=balrog.__version__,
     classifiers=[
         "Development Status :: 6 - Mature",
         "Intended Audience :: Developers",
