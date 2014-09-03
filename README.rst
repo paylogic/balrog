@@ -31,6 +31,18 @@ Permission declaration:
 
 
     import balrog
+    from flask import request
+
+    def get_identity():
+    """Get current user."""
+        # Flask request wrapper implements the ``user`` property
+        return request.user
+
+    def get_role(identity, *args, **kwargs):
+    """Get current identity role."""
+        # User.role is a property of the ORM User model
+        return identity.role
+
 
     read = balrog.Permissions(name="article.read")
     post = balrog.Permissions(name="article.post")
@@ -62,6 +74,11 @@ Permission checking:
 .. code-block:: python
 
     policy.check("article.comment")
+
+
+Filtering collections:
+
+.. code-block:: python
 
     articles = session.query(Article)
     my_articles = policy.filter("article.view", objects=articles)
