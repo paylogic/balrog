@@ -34,11 +34,6 @@ for text_file in ['README.rst', 'CHANGES.rst']:
     with codecs.open(os.path.join(os.path.dirname(os.path.abspath(__file__)), text_file), encoding="utf-8") as f:
         long_description.append(f.read())
 
-tests_require = [
-    'pytest-pep8==1.0.5',
-    'pytest==2.5.1',
-]
-
 setup(
     name="balrog",
     description="Python access control library.",
