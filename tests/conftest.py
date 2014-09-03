@@ -1,3 +1,3 @@
 """Register common fixtures."""
 
-from fixtures import *
+from .fixtures import *
