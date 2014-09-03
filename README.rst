@@ -3,7 +3,8 @@ Balrog
 
 Balrog is a Python library that helps you to build permission checking system in your projects:
 
-	- You shall not pass!
+.. code-block::
+	You shall not pass!
 
 
 Balrog is good for systems with the staticly defined roles that enable certain workflows.
@@ -14,7 +15,7 @@ This approach allows covering your system with functional tests according to the
 Installation
 ------------
 
-.. sourcecode::
+.. code-block::
 
     pip install balrog
 
@@ -245,4 +246,4 @@ This software is licensed under the `MIT license <http://en.wikipedia.org/wiki/M
 See `License <https://github.com/paylogic/balrog/blob/master/LICENSE>`_
 
 
-© 2013 Paylogic International.
+© 2014 Paylogic International.
