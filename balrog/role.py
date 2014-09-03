@@ -33,7 +33,7 @@ class Role(object):
         try:
             permission = self.permissions[permission]
         except KeyError:
-            raise exceptions.PermissionNotFound()
+            return False
         else:
             return permission.check(identity, *args, **kwargs)
 

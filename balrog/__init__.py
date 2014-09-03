@@ -12,4 +12,3 @@ try:
 except ImportError:
     # avoid import errors when only __version__ is needed (for setup.py)
     pass
-

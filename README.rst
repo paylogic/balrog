@@ -1,15 +1,15 @@
 Balrog
 ======
 
-Balrog is a Python library that helps you to build permission checking system in your projects:
+Balrog is a Python library that helps you to build an authorization system in your projects:
 
 .. code-block::
-	You shall not pass!
+    You shall not pass!
 
 
-Balrog is good for systems with the staticly defined roles that enable certain workflows.
-Every identity can have only one role, but on the certain context it requests permission for.
-This approach allows covering your system with functional tests according to the roles and flows.
+Balrog is good for systems with the statically defined roles that enable certain workflows.
+Every identity can have only one role on the certain context. This approach allows covering
+your system with functional tests according to the roles and flows.
 
 
 Installation
@@ -30,41 +30,41 @@ Permission declaration:
 .. code-block:: python
 
 
-	import balrog
+    import balrog
 
-	read = balrog.Permissions(name="article.read")
-	post = balrog.Permissions(name="article.post")
-	comment = balrog.Permissions(name="article.comment")
+    read = balrog.Permissions(name="article.read")
+    post = balrog.Permissions(name="article.post")
+    comment = balrog.Permissions(name="article.comment")
 
-	anonymous = balrog.Role(
-		name="anonymous",
-		permissions=[read],
-	)
-	"""Anonymous visitors can read articles."""
+    anonymous = balrog.Role(
+        name="anonymous",
+        permissions=[read],
+    )
+    """Anonymous visitors can read articles."""
 
-	user = balrog.Role(
-		name="user",
-		permissions=[read, comment],
-	)
-	"""User accounts can read and comment articles."""
+    user = balrog.Role(
+        name="user",
+        permissions=[read, comment],
+    )
+    """User accounts can read and comment articles."""
 
-	author = balrog.Role(
-		name="author",
-		permissions=[read, post, comment],
-	)
-	"""Author accounts can read, create and comment articles."""
+    author = balrog.Role(
+        name="author",
+        permissions=[read, post, comment],
+    )
+    """Author accounts can read, create and comment articles."""
 
-	policy = balrog.Policy(roles=[anonymous, user, author])
+    policy = balrog.Policy(roles=[anonymous, user, author], get_identity=get_identity, get_role=get_role)
 
 
 Permission checking:
 
 .. code-block:: python
-	
-	policy.check("article.comment")
 
-	articles = session.query(Article)
-	my_articles = policy.filter("article.view", objects=articles)
+    policy.check("article.comment")
+
+    articles = session.query(Article)
+    my_articles = policy.filter("article.view", objects=articles)
 
 
 Every role is a collection of permissions. Besides being included in the role permissions can
@@ -79,10 +79,10 @@ want to take with this resource.
 
 .. code-block:: python
 
-	import balrog
+    import balrog
 
-	eat = balrog.Permission(name="cucumber.eat")
-	happy = balrog.Permission(name="be-happy")
+    eat = balrog.Permission(name="cucumber.eat")
+    happy = balrog.Permission(name="be-happy")
 
 
 Name is just a string identifier that you are using in order to ask a policy for a permission.
@@ -109,13 +109,13 @@ subclass the Role class instead of granting all permissions to the role:
 
 .. code-block:: python
 
-	import balrog
+    import balrog
 
 
-	class Admin(balrog.Role):
+    class Admin(balrog.Role):
 
-		def check(self, identity, permission, *args, **kwargs):
-			return True
+        def check(self, identity, permission, *args, **kwargs):
+            return True
 
 
 
@@ -135,12 +135,12 @@ and restore the identity instance (e.g. User object) for example from the Flask 
 
 .. code-block:: python
 
-	from flask import request
+    from flask import request
 
-	def get_identity():
-	"""Get current user."""
-		# Flask request wrapper implements the ``user`` property
-		return request.user
+    def get_identity():
+    """Get current user."""
+        # Flask request wrapper implements the ``user`` property
+        return request.user
 
 
 
@@ -153,10 +153,10 @@ to the user in the database.
 
 .. code-block:: python
 
-	def get_role(identity, *args, **kwargs):
-	"""Get current identity role."""
-		# User.role is a property of the ORM User model
-		return identity.role
+    def get_role(identity, *args, **kwargs):
+    """Get current identity role."""
+        # User.role is a property of the ORM User model
+        return identity.role
 
 
 check
@@ -167,8 +167,8 @@ to Permission.check.
 
 .. code-block:: python
 
-	if not policy.check("article.read", article=a):
-		flask.abort("You can't access the article `{0}`".format(a.id))
+    if not policy.check("article.read", article=a):
+        flask.abort("You can't access the article `{0}`".format(a.id))
 
 filter
 ~~~~~~
@@ -178,28 +178,28 @@ Filter function that is removing elements that current identity has no access to
 
 .. code-block:: python
 
-	articles = session.query(Article).filter_by(is_published=True)
+    articles = session.query(Article).filter_by(is_published=True)
 
-	my_articles = policy.filter("article.read", objects=articles)
+    my_articles = policy.filter("article.read", objects=articles)
 
 
 Implementing your own filtering:
 
 .. code-block:: python
 
-	import balrog
+    import balrog
 
-	class ViewArticle(balrog.Permission);
+    class ViewArticle(balrog.Permission);
 
-		def filter(self, identity, objects, *args, **kwargs):
-			"""Filter out articles of the other users.
+        def filter(self, identity, objects, *args, **kwargs):
+            """Filter out articles of the other users.
 
-			:param identity: User object.
-			:param objects: SQLAlchemy query.
+            :param identity: User object.
+            :param objects: SQLAlchemy query.
 
-			:returns: SQLAlchemy query with applied filtering.
-			"""
-			return objects.filter_by(user_id=identity.id)
+            :returns: SQLAlchemy query with applied filtering.
+            """
+            return objects.filter_by(user_id=identity.id)
 
 
 Filter function can raise an exception in the case when there's no such permission
@@ -210,10 +210,10 @@ an empty list, some - falsy ORM query, etc. Instead the exception should be hand
 
 .. code-block:: python
 
-	try:
-		my_articles = policy.filter("article.read", objects=articles)
-	except balrog.PermissionNotFound:
-		my_articles = []
+    try:
+        my_articles = policy.filter("article.read", objects=articles)
+    except balrog.PermissionNotFound:
+        my_articles = []
 
 
 context
@@ -224,8 +224,8 @@ Role and Permission methods.
 You can pass certain instance of an object you control your access using whitelists.
 
 .. code-block:: python
-	
-	policy.check("message.send", ip=ip_addr)
+
+    policy.check("message.send", ip=ip_addr)
 
 
 Policy.check method can compare if ip address is in a whitelist.
@@ -243,7 +243,7 @@ License
 
 This software is licensed under the `MIT license <http://en.wikipedia.org/wiki/MIT_License>`_
 
-See `License <https://github.com/paylogic/balrog/blob/master/LICENSE>`_
+See `License <https://github.com/paylogic/balrog/blob/master/LICENSE.txt>`_
 
 
 © 2014 Paylogic International.
