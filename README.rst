@@ -200,6 +200,21 @@ Implementing your own filtering:
 			"""
 			return objects.filter_by(user_id=identity.id)
 
+
+Filter function can raise an exception in the case when there's no such permission
+in the role of the identity. In this case library doesn't know for sure what type to
+return that represents an empty collection of objects. Some projects would expect
+an empty list, some - falsy ORM query, etc. Instead the exception should be handled:
+
+
+.. code-block:: python
+
+	try:
+		my_articles = policy.filter("article.read", objects=articles)
+	except balrog.PermissionNotFound:
+		my_articles = []
+
+
 context
 ~~~~~~~
 
