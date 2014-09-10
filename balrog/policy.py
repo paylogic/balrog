@@ -15,6 +15,7 @@ class Policy(object):
             identity.
         :param get_identity: Callable that returns role of the currently authenticated
             identity.
+
         """
         self._get_identity = get_identity
         self._get_role = get_role
@@ -29,17 +30,17 @@ class Policy(object):
     def get_identity(self):
         """Get current identity.
 
-        :returns: Identity object which can be provided via a callback.
+        :returns: An identity object which can be provided via a callback.
+
         """
-        if self._get_identity:
-            return self._get_identity()
-        return None
+        return self._get_identity()
 
     def get_role(self, identity, *args, **kwargs):
         """Get identity role.
 
         :returns: Identity role object which name can be provided via a callback.
         :raises: `RoleNotFound` if no role found for this identity.
+
         """
         name = self._get_role(identity, *args, **kwargs)
 
@@ -53,6 +54,7 @@ class Policy(object):
 
         :param permission: Permission name.
         :return: `True` if identity role has this permission.
+
         """
         identity = self.get_identity()
         role = self.get_role(identity, *args, **kwargs)
@@ -69,6 +71,7 @@ class Policy(object):
         :raises: `RoleNotFound` if no role found for this identity.
         :raises: `PermissionNotFound` when no permission is found that can
             filter the objects.
+
         """
         identity = self.get_identity()
         role = self.get_role(identity, *args, **kwargs)

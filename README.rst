@@ -9,7 +9,14 @@ Balrog is a Python library that helps you to build an authorization system in yo
 
 Balrog is good for systems with the statically defined roles that enable certain workflows.
 Every identity can have only one role on the certain context. This approach allows covering
-your system with functional tests according to the roles and flows.
+your system with functional tests according to the roles and flows these roles perform.
+Formal requirements can be applied to the workflows in the system which will define roles.
+
+These roles are statically defined in the code and this way properly versioned and covered
+with testing. It is possible to do a composition of certain permission groups and share them
+between the roles, but semantically there's no way for one identity to have 2 contradicting
+roles when one role forbids actions and the other allows them. Instead a proper role
+can be extracted with the certain permissions that it allows.
 
 
 Installation
@@ -22,8 +29,13 @@ Installation
 Usage
 ------
 
-The entry point where permission is being checked is the Policy. Define an instance of the Policy
+Permission is needed to access a resource or to perform an action. Permissions are grouped in the roles
+and roles are grouped in the policies.
+
+The entry point where a permission is being checked is the Policy. Define an instance of the Policy
 and specify the list of roles it works with.
+
+Project can contain multiple policies that serve different purposes.
 
 Permission declaration:
 
@@ -73,6 +85,8 @@ Permission checking:
 
 .. code-block:: python
 
+    # ...
+    policy = balrog.Policy(roles=[anonymous, user, author], get_identity=get_identity, get_role=get_role)
     policy.check("article.comment")
 
 
@@ -105,11 +119,10 @@ want to take with this resource.
 Name is just a string identifier that you are using in order to ask a policy for a permission.
 The name formatting convention can be decided per project.
 
-Permissions have 2 methods: ``check`` and ``filter``. By default they implement ``True`` and
-simply bypassing the objects back. These methods is an additional opportunity to control the
-access to certain context, instances of your resources, check whitelists, filter out objects
+Permissions have 2 methods: ``check`` and ``filter``. By default the ``check`` method implements ``True``
+and the ``filter`` method is simply bypassing the objects. These methods are an additional opportunities
+to control the access to certain context, instances of your resources, check whitelists, filter out objects
 from collections that can not be seen by currently authenticated identity, etc.
-
 
 
 Role
@@ -121,7 +134,7 @@ and used in the policy permission check implicitly.
 Roles are collections of permissions that define the role and enable certain workflows in your
 system.
 
-When system is large and has a lot of specific permissions declared sometimes it is easier to
+When a system is large and has a lot of specific permissions declared sometimes it is easier to
 subclass the Role class instead of granting all permissions to the role:
 
 .. code-block:: python
@@ -220,7 +233,7 @@ Implementing your own filtering:
 
 
 Filter function can raise an exception in the case when there's no such permission
-in the role of the identity. In this case library doesn't know for sure what type to
+in the role of the identity. In this case the library doesn't know for sure what type to
 return that represents an empty collection of objects. Some projects would expect
 an empty list, some - falsy ORM query, etc. Instead the exception should be handled:
 
@@ -261,6 +274,3 @@ License
 This software is licensed under the `MIT license <http://en.wikipedia.org/wiki/MIT_License>`_
 
 See `License <https://github.com/paylogic/balrog/blob/master/LICENSE.txt>`_
-
-
-© 2014 Paylogic International.

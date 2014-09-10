@@ -9,6 +9,7 @@ class Permission(object):
         """Create permission.
 
         :param name: Unique permission name within one role.
+
         """
         self.name = name
 
@@ -18,6 +19,9 @@ class Permission(object):
         :param identity: Currently authenticated identity.
 
         :return: `True` if permission is granted to requested identity.
+        :note: This function could be overridden in order to do additional check
+            in the certain context.
+
         """
         return True
 
@@ -28,5 +32,8 @@ class Permission(object):
         :param objects: Objects to filter out.
 
         :returns: Filtered objects.
+        :note: This function should be overridden in order to implement the
+            filtering in the certain context.
+
         """
         return objects

@@ -5,13 +5,14 @@ from balrog import exceptions
 
 class Role(object):
 
-    """Role, the set of permissions that identity can have access to."""
+    """Role, a set of permissions that identity can have access to."""
 
     def __init__(self, name, permissions):
         """Create a role.
 
         :param name: Unique role name within one policy.
         :param permissions: Permissions of the role.
+
         """
         self.name = name
         self.permissions = {}
@@ -29,6 +30,7 @@ class Role(object):
         :param permission: Permission name.
 
         :return: True if identity role has this permission.
+
         """
         try:
             permission = self.permissions[permission]
@@ -47,6 +49,7 @@ class Role(object):
         :returns: Filtered objects.
         :raises: `PermissionNotFound` when no permission is found that can
             filter the objects.
+
         """
         try:
             permission = self.permissions[permission]
