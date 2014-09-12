@@ -7,16 +7,16 @@ Balrog is a Python library that helps you to build an authorization system in yo
     You shall not pass!
 
 
-Balrog is good for systems with the statically defined roles that enable certain workflows.
+Balrog is good for systems with statically defined roles that enable certain workflows.
 Every identity can have only one role on the certain context. This approach allows covering
 your system with functional tests according to the roles and flows these roles perform.
 Formal requirements can be applied to the workflows in the system which will define roles.
 
 These roles are statically defined in the code and this way properly versioned and covered
 with testing. It is possible to do a composition of certain permission groups and share them
-between the roles, but semantically there's no way for one identity to have 2 contradicting
+between roles, but semantically there's no way for one identity to have 2 contradicting
 roles when one role forbids actions and the other allows them. Instead a proper role
-can be extracted with the certain permissions that it allows.
+can be extracted with the permissions it allows.
 
 
 Installation
@@ -203,7 +203,7 @@ to Permission.check.
 filter
 ~~~~~~
 
-Filter function that is removing elements that current identity has no access to from the collection of objects.
+The function that is filtering out items of the given objects if the identity has no permission to access them.
 
 
 .. code-block:: python
