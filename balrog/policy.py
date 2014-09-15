@@ -52,7 +52,7 @@ class Policy(object):
         :param permission: Permission name.
         :return: `True` if identity role has this permission.
         """
-        identity = self.get_identity()
+        identity = self.get_identity(*args, **kwargs)
         role = self.get_role(identity, *args, **kwargs)
         if role is None:
             return False
