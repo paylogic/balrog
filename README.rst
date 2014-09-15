@@ -3,7 +3,7 @@ Balrog
 
 Balrog is a Python library that helps you to build an authorization system in your projects:
 
-.. code-block::
+::
     You shall not pass!
 
 
@@ -22,7 +22,7 @@ can be extracted with the permissions it allows.
 Installation
 ------------
 
-.. code-block::
+.. code-block:: sh
 
     pip install balrog
 
