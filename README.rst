@@ -4,6 +4,7 @@ Balrog
 Balrog is a Python library that helps you to build an authorization system in your projects:
 
 ::
+
     You shall not pass!
 
 
@@ -25,6 +26,7 @@ Installation
 .. code-block:: sh
 
     pip install balrog
+
 
 Usage
 -----
