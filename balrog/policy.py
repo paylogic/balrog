@@ -26,12 +26,12 @@ class Policy(object):
             )
             self.roles[role.name] = role
 
-    def get_identity(self):
+    def get_identity(self, *args, **kwargs):
         """Get current identity.
 
         :returns: An identity object which can be provided via a callback.
         """
-        return self._get_identity()
+        return self._get_identity(*args, **kwargs)
 
     def get_role(self, identity, *args, **kwargs):
         """Get identity role.
