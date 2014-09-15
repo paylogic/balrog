@@ -27,7 +27,7 @@ Installation
     pip install balrog
 
 Usage
-------
+-----
 
 Permission is needed to access a resource or to perform an action. Permissions are grouped in the roles
 and roles are grouped in the policies.
