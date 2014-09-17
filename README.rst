@@ -47,7 +47,7 @@ Permission declaration:
     import balrog
     from flask import request
 
-    def get_identity():
+    def get_identity(*args, **kwargs):
     """Get current user."""
         # Flask request wrapper implements the ``user`` property
         return request.user
@@ -169,7 +169,7 @@ and restore the identity instance (e.g. User object) for example from the Flask 
 
     from flask import request
 
-    def get_identity():
+    def get_identity(*args, **kwargs):
     """Get current user."""
         # Flask request wrapper implements the ``user`` property
         return request.user
