@@ -68,6 +68,6 @@ class Policy(object):
         :raises: `PermissionNotFound` when no permission is found that can
             filter the objects.
         """
-        identity = self.get_identity()
+        identity = self.get_identity(*args, **kwargs)
         role = self.get_role(identity, *args, **kwargs)
         return role.filter(identity, permission, objects, *args, **kwargs)
