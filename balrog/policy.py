@@ -11,9 +11,9 @@ class Policy(object):
         """Create and configure access control.
 
         :param roles: All roles of this access control.
-        :param get_role: Callable that returns role name of the currently authenticated
+        :param get_identity: Callable that returns the currently authenticated
             identity.
-        :param get_identity: Callable that returns role of the currently authenticated
+        :param get_role: Callable that returns role name of the currently authenticated
             identity.
         """
         self._get_identity = get_identity
