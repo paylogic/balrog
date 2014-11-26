@@ -26,7 +26,7 @@ class Policy(object):
                 u'The role `{0}` is already registered.'.format(role.name)
             )
             self.roles[role.name] = role
-            for name, permission in role.permissions.iteritems():
+            for name, permission in role.permissions.items():
                 if name not in self.permissions:
                     self.permissions[name] = permission
 

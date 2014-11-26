@@ -10,7 +10,7 @@ def test_create(policy, policy_roles):
     assert policy.roles == dict((role.name, role) for role in policy_roles)
     permissions = {}
     for role in policy_roles:
-        for name, permission in role.permissions.iteritems():
+        for name, permission in role.permissions.items():
             permissions[name] = permission
     assert policy.permissions == permissions
 
