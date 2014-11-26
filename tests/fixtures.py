@@ -5,7 +5,9 @@ import balrog
 
 
 class User(object):
+
     """Test identity."""
+
     name = 'user'
 
 
@@ -31,7 +33,7 @@ def identity(identity_role):
 
 @pytest.fixture
 def objects():
-    """Objects to filter."""
+    """The objects to filter."""
     return [1, 2, 3]
 
 
@@ -57,6 +59,7 @@ def role(role_name, role_permissions):
 def identity_role(role):
     """The role to use for the identity."""
     return role
+
 
 @pytest.fixture
 def policy_roles(role):
@@ -84,17 +87,10 @@ def get_role():
 
 
 @pytest.fixture
-def all_permissions(permission):
-    """All the permissions."""
-    return None
-
-
-@pytest.fixture
-def policy(policy_roles, get_identity, get_role, all_permissions):
+def policy(policy_roles, get_identity, get_role):
     """Role object."""
     return balrog.Policy(
         roles=policy_roles,
         get_identity=get_identity,
-        get_role=get_role,
-        permissions=all_permissions,
+        get_role=get_role
     )

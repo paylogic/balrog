@@ -1,14 +1,13 @@
 """Access control policy."""
 
 from balrog import exceptions
-from balrog.permission import Permission
 
 
 class Policy(object):
 
     """Controls the access of a certain actor to a certain action on a resource."""
 
-    def __init__(self, roles, get_identity, get_role, permissions=None):
+    def __init__(self, roles, get_identity, get_role):
         """Create and configure access control.
 
         :param roles: All roles of this access control.
@@ -16,25 +15,20 @@ class Policy(object):
             identity.
         :param get_role: Callable that returns role name of the currently authenticated
             identity.
-        :param permissions: List of all the permissions
         """
         self._get_identity = get_identity
         self._get_role = get_role
         self.roles = {}
-        self.permissions = None
-        # Do a specific None check so we can initialize a system without any permissions if we want.
-        if permissions is not None:
-            self.permissions = {}
-            for permission in permissions:
-                if isinstance(permission, basestring):
-                    permission = Permission(permission)
-                self.permissions[permission.name] = permission
+        self.permissions = {}
 
         for role in roles:
             assert role.name not in self.roles, (
                 u'The role `{0}` is already registered.'.format(role.name)
             )
             self.roles[role.name] = role
+            for name, permission in role.permissions.iteritems():
+                if name not in self.permissions:
+                    self.permissions[name] = permission
 
     def _check_permission(self, permission):
         """Check if the given permission exists in the list of permissions.
