@@ -5,9 +5,22 @@ import mock
 import balrog
 
 
-def test_create(policy, policy_roles):
+@pytest.mark.parametrize(
+    'all_permissions',
+    (
+        None,
+        ['test'],
+        ['test1', 'test2'],
+    )
+)
+def test_create(policy, policy_roles, all_permissions):
     """Test policy creation."""
     assert policy.roles == dict((role.name, role) for role in policy_roles)
+    if all_permissions is None:
+        assert policy.permissions is None
+    else:
+        for permission in all_permissions:
+            assert permission in policy.permissions
 
 
 def test_role_name_is_unique(role, get_role, get_identity):
@@ -39,10 +52,21 @@ def test_check(policy, permission_name, identity):
         -1,
     ),
 )
-def test_check_role_not_found(policy, identity, permission_name, name):
+def test_check_permission_not_found(policy, permission_name, name):
     """Test Policy.check is False when permission is not found."""
     assert name != permission_name
-    assert not policy.check(identity, name)
+    assert not policy.check(name)
+
+@pytest.mark.parametrize(
+    'identity_role',
+    (
+        None,
+    )
+)
+def test_check_role_not_found(policy, permission_name, identity_role):
+    """Test Policy.check is False when role is not found."""
+    assert not policy.check(permission_name)
+
 
 
 def test_filter(policy, identity, permission_name, objects):
@@ -66,3 +90,16 @@ def test_get_role(policy, identity):
         with mock.patch.object(policy, '_get_role') as mock_get_role:
             mock_get_role.return_value = 'unknown'
             policy.get_role(identity)
+
+
+@pytest.mark.parametrize(
+    'all_permissions',
+    (
+        ['test1'],
+    )
+)
+def test_check_with_permissions(policy, all_permissions, permission):
+    """Test that if we specify no permissions on the policy the checks fails."""
+    with pytest.raises(balrog.PermissionNotFound):
+        policy.check(permission)
+    assert not policy.check('test1')

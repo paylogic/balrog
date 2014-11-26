@@ -22,10 +22,10 @@ def permission(permission_name):
 
 
 @pytest.fixture
-def identity(role):
+def identity(identity_role):
     """Identity object."""
     user = User()
-    user.role = role
+    user.role = identity_role
     return user
 
 
@@ -54,6 +54,11 @@ def role(role_name, role_permissions):
 
 
 @pytest.fixture
+def identity_role(role):
+    """The role to use for the identity."""
+    return role
+
+@pytest.fixture
 def policy_roles(role):
     """Policy roles."""
     return [role]
@@ -71,15 +76,25 @@ def get_identity(identity):
 def get_role():
     """Get role policy callback."""
     def _get_role(identity, *args, **kwargs):
-        return identity.role.name
+        try:
+            return identity.role.name
+        except AttributeError:
+            return
     return _get_role
 
 
 @pytest.fixture
-def policy(policy_roles, get_identity, get_role):
+def all_permissions(permission):
+    """All the permissions."""
+    return None
+
+
+@pytest.fixture
+def policy(policy_roles, get_identity, get_role, all_permissions):
     """Role object."""
     return balrog.Policy(
         roles=policy_roles,
         get_identity=get_identity,
         get_role=get_role,
+        permissions=all_permissions,
     )
