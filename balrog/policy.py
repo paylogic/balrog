@@ -44,7 +44,7 @@ class Policy(object):
         try:
             return self.roles[name]
         except KeyError:
-            raise exceptions.RoleNotFound()
+            raise exceptions.RoleNotFound(name)
 
     def check(self, permission, *args, **kwargs):
         """Check if the identity has requested permission.
