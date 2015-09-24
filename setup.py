@@ -38,6 +38,6 @@ setup(
         "Programming Language :: Python :: 3"
     ] + [("Programming Language :: Python :: %s" % x) for x in "2.6 2.7 3.4".split()],
     packages=["balrog"],
-    tests_require=["detox"],
+    tests_require=["tox"],
 
 )
