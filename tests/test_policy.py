@@ -8,6 +8,11 @@ import balrog
 def test_create(policy, policy_roles):
     """Test policy creation."""
     assert policy.roles == dict((role.name, role) for role in policy_roles)
+    permissions = {}
+    for role in policy_roles:
+        for name, permission in role.permissions.items():
+            permissions[name] = permission
+    assert policy.permissions == permissions
 
 
 def test_role_name_is_unique(role, get_role, get_identity):
@@ -39,10 +44,23 @@ def test_check(policy, permission_name, identity):
         -1,
     ),
 )
-def test_check_role_not_found(policy, identity, permission_name, name):
+def test_check_permission_not_found(policy, permission_name, name):
     """Test Policy.check is False when permission is not found."""
     assert name != permission_name
-    assert not policy.check(identity, name)
+    with pytest.raises(balrog.PermissionNotFound):
+        policy.check(name)
+
+
+@pytest.mark.parametrize(
+    'identity_role',
+    (
+        None,
+    )
+)
+def test_check_role_not_found(policy, permission_name, identity_role):
+    """Test Policy.check raises RoleNotFound when role is not found."""
+    with pytest.raises(balrog.RoleNotFound):
+        policy.check(permission_name)
 
 
 def test_filter(policy, identity, permission_name, objects):
