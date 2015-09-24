@@ -2,9 +2,9 @@ language: python
 sudo: false
 # command to install dependencies
 install:
-  - pip install virtualenv python-coveralls
+  - pip install tox python-coveralls
 # # command to run tests
-script: python setup.py test
+script: tox
 after_success:
   - pip install -r requirements-testing.txt -e .
   - py.test --cov=balrog --cov-report=term-missing tests
