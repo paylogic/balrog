@@ -58,8 +58,9 @@ def test_check_permission_not_found(policy, permission_name, name):
     )
 )
 def test_check_role_not_found(policy, permission_name, identity_role):
-    """Test Policy.check is False when role is not found."""
-    assert not policy.check(permission_name)
+    """Test Policy.check raises RoleNotFound when role is not found."""
+    with pytest.raises(balrog.RoleNotFound):
+        policy.check(permission_name)
 
 
 def test_filter(policy, identity, permission_name, objects):

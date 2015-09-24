@@ -67,16 +67,12 @@ class Policy(object):
 
         :param permission: Permission name.
         :return: `True` if identity role has this permission.
+        :raises: `RoleNotFound` if no role was found.
         :raises: `PermissionNotFound` when no permission is found.
         """
         self._check_permission(permission)
         identity = self.get_identity(*args, **kwargs)
-        try:
-            role = self.get_role(identity, *args, **kwargs)
-        except exceptions.RoleNotFound:
-            role = None
-        if role is None:
-            return False
+        role = self.get_role(identity, *args, **kwargs)
         return role.check(identity, permission, *args, **kwargs)
 
     def filter(self, permission, objects, *args, **kwargs):
