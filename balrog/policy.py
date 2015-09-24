@@ -19,12 +19,28 @@ class Policy(object):
         self._get_identity = get_identity
         self._get_role = get_role
         self.roles = {}
+        self.permissions = {}
 
         for role in roles:
             assert role.name not in self.roles, (
                 u'The role `{0}` is already registered.'.format(role.name)
             )
             self.roles[role.name] = role
+            for name, permission in role.permissions.items():
+                if name not in self.permissions:
+                    self.permissions[name] = permission
+
+    def _check_permission(self, permission):
+        """Check if the given permission exists in the list of permissions.
+
+        :param permission: The permission to check.
+
+        :raises: `PermissionNotFound` if the permissions wasn't found.
+        """
+        if self.permissions and permission not in self.permissions:
+            raise exceptions.PermissionNotFound(
+                'Permission {0} was not found in the list of all permissions.'.format(permission)
+            )
 
     def get_identity(self, *args, **kwargs):
         """Get current identity.
@@ -51,11 +67,12 @@ class Policy(object):
 
         :param permission: Permission name.
         :return: `True` if identity role has this permission.
+        :raises: `RoleNotFound` if no role was found.
+        :raises: `PermissionNotFound` when no permission is found.
         """
+        self._check_permission(permission)
         identity = self.get_identity(*args, **kwargs)
         role = self.get_role(identity, *args, **kwargs)
-        if role is None:
-            return False
         return role.check(identity, permission, *args, **kwargs)
 
     def filter(self, permission, objects, *args, **kwargs):
@@ -68,6 +85,7 @@ class Policy(object):
         :raises: `PermissionNotFound` when no permission is found that can
             filter the objects.
         """
+        self._check_permission(permission)
         identity = self.get_identity(*args, **kwargs)
         role = self.get_role(identity, *args, **kwargs)
         return role.filter(identity, permission, objects, *args, **kwargs)

@@ -80,7 +80,12 @@ Permission declaration:
     )
     """Author accounts can read, create and comment articles."""
 
-    policy = balrog.Policy(roles=[anonymous, user, author], get_identity=get_identity, get_role=get_role)
+    policy = balrog.Policy(
+        roles=[anonymous, user, author],
+        get_identity=get_identity,
+        get_role=get_role,
+        permissions=[read, post, comment]
+    )
 
 
 Permission checking:

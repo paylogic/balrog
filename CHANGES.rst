@@ -1,6 +1,11 @@
 Changelog
 =========
 
+dev
+---
+
+- Policy will keep track of all the permissions and raise PermissionNotFound when called with unknown permission (hvdklauw)
+
 1.0.1
 -----
 
