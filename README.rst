@@ -48,12 +48,12 @@ Permission declaration:
     from flask import request
 
     def get_identity(*args, **kwargs):
-    """Get current user."""
+        """Get current user."""
         # Flask request wrapper implements the ``user`` property
         return request.user
 
     def get_role(identity, *args, **kwargs):
-    """Get current identity role."""
+        """Get current identity role."""
         # User.role is a property of the ORM User model
         return identity.role
 
@@ -84,7 +84,6 @@ Permission declaration:
         roles=[anonymous, user, author],
         get_identity=get_identity,
         get_role=get_role,
-        permissions=[read, post, comment]
     )
 
 
@@ -175,7 +174,7 @@ and restore the identity instance (e.g. User object) for example from the Flask 
     from flask import request
 
     def get_identity(*args, **kwargs):
-    """Get current user."""
+        """Get current user."""
         # Flask request wrapper implements the ``user`` property
         return request.user
 
@@ -191,7 +190,7 @@ to the user in the database.
 .. code-block:: python
 
     def get_role(identity, *args, **kwargs):
-    """Get current identity role."""
+        """Get current identity role."""
         # User.role is a property of the ORM User model
         return identity.role
 
