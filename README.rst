@@ -58,9 +58,9 @@ Permission declaration:
         return identity.role
 
 
-    read = balrog.Permissions(name="article.read")
-    post = balrog.Permissions(name="article.post")
-    comment = balrog.Permissions(name="article.comment")
+    read = balrog.Permission(name="article.read")
+    post = balrog.Permission(name="article.post")
+    comment = balrog.Permission(name="article.comment")
 
     anonymous = balrog.Role(
         name="anonymous",
@@ -167,7 +167,7 @@ Besides roles policy requires some configuration and backend implementation:
 get_identity
 ~~~~~~~~~~~~
 
-A callback that returns currenlty authenticated identity. Projects have to implement this backend
+A callback that returns currently authenticated identity. Projects have to implement this backend
 and restore the identity instance (e.g. User object) for example from the Flask Request object.
 
 .. code-block:: python
